@@ -55,7 +55,7 @@ Note that this approach does not remove these files from the robocode installati
 Here is an example of the command line used to build and test the system.
 
 ```shell
-C:\Users\ID3\GitHub\robocode-ayj-ARobot> mvn -Drobocode.home=/Users/johnson/robocode test
+C:\Users\ID3\GitHub\robocode-ayj-ARobot> mvn -Drobocode.home=C:\robocode test
 ```
 
 If all test cases passed, the build should succeed. 
