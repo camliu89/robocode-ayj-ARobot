@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset='utf-8' />
+    <meta http-equiv="X-UA-Compatible" content="chrome=1" />
+    <meta name="description" content="Robocode-ayj-arobot : A competitive Robocode" />
+
+    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
+
+    <title>Robocode-ayj-arobot</title>
+  </head>
+
+  <body>
+
+    <!-- HEADER -->
+    <div id="header_wrap" class="outer">
+        <header class="inner">
+          <a id="forkme_banner" href="https://github.com/camliu89/robocode-ayj-ARobot">View on GitHub</a>
+
+          <h1 id="project_title">Robocode-ayj-arobot</h1>
+          <h2 id="project_tagline">A competitive Robocode</h2>
+
+            <section id="downloads">
+              <a class="zip_download_link" href="https://github.com/camliu89/robocode-ayj-ARobot/zipball/master">Download this project as a .zip file</a>
+              <a class="tar_download_link" href="https://github.com/camliu89/robocode-ayj-ARobot/tarball/master">Download this project as a tar.gz file</a>
+            </section>
+        </header>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div id="main_content_wrap" class="outer">
+      <section id="main_content" class="inner">
+        <h6>Welcome to the Robocode-ayj-Arobot project</h6>
+
+<p>The project is dedicated to improve the performance of ARobot to compete in a Robocode tournament.</p>
+
+<h2>Movement</h2>
+
+<p>ARobot moves according to the opponent's behavior. First it will sit at his initial spot. When an enemy's bullet is fired, ARobot will try to avoid it by moving left or right. That is why ARobot will have its gun pointing to the enemy, but having the tank in a position so that it is ready to move left or right. If ARobot is hit by a bullet, it will fall back by 100 pixels.</p>
+
+<h2>Firing</h2>
+
+<p>ARobot fires when it scans an enemy, but the firepower depends on if its gun is pointing directly to the enemy. if the bearing from the gun to the enemy is 0 (pointing directly), then it fires with a power of 2. However, if is not, then it will fires depending on the energy of ARobot.</p>
+
+<h2>Targeting</h2>
+
+<p>ARobot will point with its gun only one enemy in the battlefield. If it loses the track of its enemy, then it will move forward 10 pixels and turn 10 degrees its radar to look for an enemy.</p>
+      </section>
+    </div>
+
+    <!-- FOOTER  -->
+    <div id="footer_wrap" class="outer">
+      <footer class="inner">
+        <p class="copyright">Robocode-ayj-arobot maintained by <a href="https://github.com/camliu89">camliu89</a></p>
+        <p>Published with <a href="http://pages.github.com">GitHub Pages</a></p>
+      </footer>
+    </div>
+
+    
+
+  </body>
+</html>
