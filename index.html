@@ -31,7 +31,9 @@
     <!-- MAIN CONTENT -->
     <div id="main_content_wrap" class="outer">
       <section id="main_content" class="inner">
-        <h6>Welcome to the Robocode-ayj-Arobot project</h6>
+        <h1>Welcome to the Robocode-ayj-Arobot project</h1>
+
+<p><img src="https://raw.github.com/camliu89/robocode-ayj-ARobot/gh-pages/images/robocode.png" alt="ARobot"></p>
 
 <p>The project is dedicated to improve the performance of ARobot to compete in a Robocode tournament.</p>
 
@@ -41,11 +43,15 @@
 
 <h2>Firing</h2>
 
-<p>ARobot fires when it scans an enemy, but the firepower depends on if its gun is pointing directly to the enemy. if the bearing from the gun to the enemy is 0 (pointing directly), then it fires with a power of 2. However, if is not, then it will fires depending on the energy of ARobot.</p>
+<p>ARobot fires when it scans an enemy, but the firepower depends on the enemy robot distance. The closest the enemy is, the highest the firepower.</p>
 
 <h2>Targeting</h2>
 
-<p>ARobot will point with its gun only one enemy in the battlefield. If it loses the track of its enemy, then it will move forward 10 pixels and turn 10 degrees its radar to look for an enemy.</p>
+<p>ARobot will point with its gun only one enemy in the battlefield. If it loses the track of its enemy, then it will move forward 10 pixels and turn 10 degrees its radar to look for another enemy.</p>
+
+<h2>Vulnerabilites</h2>
+
+<p>ARobot will fire at every turn. It does not predict the movement of the enemy robot. Therefore it will lose energy at every turn. It does not also attempt to avoid any near robot, making collisions happen if possible.</p>
       </section>
     </div>
 
