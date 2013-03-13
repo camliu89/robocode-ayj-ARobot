@@ -1,3 +1,19 @@
+/**
+ * This file is part of ARobot.
+ * ARobot is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * ARobot is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with ARobot.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
 package ayj;
 
 import robocode.HitByBulletEvent;
@@ -13,14 +29,30 @@ import java.awt.Color;
  */
 public class ARobot extends Robot {
 
-  /** to keep track the number of turns. */
+  /** 
+   * To keep track the number of turns. 
+   */
   int count = 0;
-  /** to turn 10 degrees each time. */
+  
+  /** 
+   * To turn 10 degrees each time. 
+   */
   int turn = 360;
-  /** to keep track of the enemy energy for the dodge movement. */
+  
+  /** 
+   * To keep track of the enemy energy for the dodge movement. 
+   */
   double enemyEnergy = 100;
-  /** change the direction of the robot movement. */
+  
+  /** 
+   * change the direction of the robot movement. 
+   */
   int direction = 1;
+  
+  /**
+   *  Instantiate an object of the robot utilities class.
+   */
+  RobotUtils utils = new RobotUtils ();
 
   /**
    * Runs the robot.
@@ -28,25 +60,24 @@ public class ARobot extends Robot {
   @Override
   public void run() {
     // Set the colors
-    setColors(Color.white, Color.blue, Color.blue);
-    setBulletColor(Color.GRAY);
+    this.pimpMyRobot();
     // infinite loop
     // checks for enemy
     while (true) {
       setAdjustGunForRobotTurn(true);
-      turnRadarRight(turn);
-      count++;
+      turnRadarRight(this.turn);
+      this.count++;
       // if in two turns can't find an enemy
       // turn -10 degrees
-      if (count > 2) {
-        turn = -10;
+      if (this.count > 2) {
+        this.turn = -10;
       }
       // if in five turns can't find an enemy
       // turn 10 degrees
-      if (count > 5) {
-        turn = 10;
+      if (this.count > 5) {
+        this.turn = 10;
       }
-      if (count > 10) {
+      if (this.count > 10) {
         ahead(100);
       }
     }
@@ -56,17 +87,17 @@ public class ARobot extends Robot {
    * Overrides event when a robot is scanned. Part of the code taken from :
    * "http://robocoderepository.com/BotFiles/2638/Newbie.java"
    * 
-   * @param e enemy.
+   * @param enemy enemy.
    */
   @Override
-  public void onScannedRobot(ScannedRobotEvent e) {
+  public void onScannedRobot(ScannedRobotEvent enemy) {
     // Set counter to 0
     count = 0;
     // make robots move side to side
-    turnRight(e.getBearing() + 90);
+    turnRight(enemy.getBearing() + 90);
     // Calculate exact location of the robot
-    double absoluteBearing = getHeading() + e.getBearing();
-    double bearingFromGun = normalRelativeAngle(absoluteBearing - getGunHeading());
+    double absoluteBearing = getHeading() + enemy.getBearing();
+    double bearingFromGun = this.utils.normalRelativeAngle(absoluteBearing - getGunHeading());
     out.println(bearingFromGun);
     // If it's close enough, fire!
     if (Math.abs(bearingFromGun) <= 3) {
@@ -75,7 +106,7 @@ public class ARobot extends Robot {
       // uses a turn, which could cause us to lose track
       // of the other robot.
       if (getGunHeat() == 0) {
-        fire(Math.min(getPowerFire(e.getDistance()), getEnergy() - .1));
+        fire(Math.min(this.utils.getPowerFire(enemy.getDistance()), getEnergy() - .1));
       }
     }
     // otherwise just set the gun to turn.
@@ -90,7 +121,7 @@ public class ARobot extends Robot {
       fire(2);
     }
     // Dodges the bullet of the enemy.
-    dodge(e);
+    this.dodge(enemy);
   }
 
   /**
@@ -102,61 +133,28 @@ public class ARobot extends Robot {
   public void onHitByBullet(HitByBulletEvent event) {
     back(200);
   }
-
+ 
   /**
    * Dodge the bullets by checking the change of energy of the enemy.
    * 
-   * @param e enemy.
+   * @param enemy The enemy robot.
    */
-  public void dodge(ScannedRobotEvent e) {
-    double changeInEnergy = enemyEnergy - e.getEnergy();
-    enemyEnergy = e.getEnergy();
+  public void dodge(ScannedRobotEvent enemy) {
+    double changeInEnergy = enemyEnergy - enemy.getEnergy();
+    enemyEnergy = enemy.getEnergy();
     if (changeInEnergy > 0 && changeInEnergy <= 3) {
       direction = -direction;
       ahead(100 * direction);
     }
   }
-
+  
   /**
-   * Gets the power of the bullet proportional to the distance.
+   * Customize my robot.
    * 
-   * @param distance the distance to the enemy.
-   * @return the power of the bullet.
    */
-  public double getPowerFire(double distance) {
-    // change number to compute easier the proportion of the power by the distance
-    // if the distance is 0, then change to 1 since 0/(any number) is 0
-    if (distance == 0) {
-      double changeDistance = 1;
-      return changeDistance / 200;
-    }
-    // Divide distance number by 200
-    // because the MAX_BULLET_POWER is 3 so
-    // if it is at 1200 distance (the max RADAR_SCAN_RADIUS) then 1200/400 is 3
-    // UPDATE: Fire power divided by 400 is to weak. Changed to 200
-    // as the distance gets lower, then then bullet power will be weaker
-    return distance / 200;
-  }
-
-  /**
-   * Normalize an angle to a relative angle.
-   * 
-   * @param angle the angle to be converted.
-   * @return the normalized angle.
-   */
-  public double normalRelativeAngle(double angle) {
-    if (angle > -180 && angle <= 180) {
-      return angle;
-    }
-    double fixedAngle = angle;
-    // if angle is less or equal than - 180, increased it by 360.
-    while (fixedAngle <= -180) {
-      fixedAngle += 360;
-    }
-    // if angle is bigger than 180, decreased it by 360.
-    while (fixedAngle > 180) {
-      fixedAngle -= 360;
-    }
-    return fixedAngle;
+  public void pimpMyRobot () {
+    //Personalized my robot
+    setColors(Color.white, Color.blue, Color.blue);
+    setBulletColor(Color.GRAY);
   }
 }
